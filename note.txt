@@ -84,3 +84,47 @@ postsRouter.post("/:id/upload", cloudinaryUploader, async(req,res,next)=>{
         next(error)
     }
 })
+
+---------------------------------------------------------------------------------------------------------
+what error is this?
+Incoming request --> POST -- Thu May 19 2022 11:44:49 GMT+0200 (Central European Summer Time)
+(node:6632) [MONGODB DRIVER] Warning: collection.update is deprecated. Use updateOne, updateMany, or bulkWrite instead.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Solution--> from https://mongoosejs.com/docs/deprecations.html
+To fix all deprecation warnings, follow the below steps:
+
+Replace update() with updateOne(), updateMany(), or replaceOne()
+
+****BEFORE****
+authorsRouter.post("/:id/avatar", cloudinaryUploader, async(req,res,next)=>{
+    try {
+        console.log(req.file)
+        const targetAuthor = await authorsModel.findById(req.params.id)
+        if(!targetAuthor) next(createError(404, `Author with id ${req.params.id} not found!`))
+
+        await targetAuthor.update({avatar:req.file.path})  //here the problem
+
+        res.send("OK")
+    } catch (error) {
+        next(error)
+    }
+})
+
+
+****AFTER****
+authorsRouter.post("/:id/avatar", cloudinaryUploader, async(req,res,next)=>{
+    try {
+        console.log(req.file)
+        const targetAuthor = await authorsModel.findById(req.params.id)
+        if(!targetAuthor) next(createError(404, `Author with id ${req.params.id} not found!`))
+
+        await targetAuthor.updateOne({avatar:req.file.path})  //FIXED
+
+        res.send("OK")
+      
+    } catch (error) {
+        next(error)
+    }
+})
+----------------------------------------------------------------------------------------------------------

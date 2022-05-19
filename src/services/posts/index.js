@@ -215,11 +215,11 @@ postsRouter.delete("/:id/comments/:commentId", async (req, res, next) => {
 
 
 //image uploading (cover image for blogPost)
-postsRouter.post("/:id/upload", cloudinaryUploader, async(req,res,next)=>{
+postsRouter.post("/:id/cover", cloudinaryUploader, async(req,res,next)=>{
     try {
         let targetBlogPost = await postsModel.findById(req.params.id)
         if(!targetBlogPost) next(createError(404, `Post with id ${req.params.id} not found!`))
-        await targetBlogPost.update({cover:req.file.path})
+        await targetBlogPost.updateOne({cover:req.file.path})
         res.send()
     } catch (error) {
         next(error)
