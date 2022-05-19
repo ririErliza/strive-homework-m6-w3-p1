@@ -52,3 +52,35 @@ postsRouter.get("/:id/comment/:commentId", async (req, res, next) => {
 
     instead of:
     const theComment = post.comments.find(comment => comment._id.toString() === req.params.commentId) 
+
+-------------------------------------------------------------------------------------------------------
+
+Error at postman that not stop sending request
+although the file is uploaded already to cloudinary
+this happened because I forgot to send response back after the uploading process is done
+
+before:
+postsRouter.post("/:id/upload", cloudinaryUploader, async(req,res,next)=>{
+    try {
+        let targetBlogPost = await postsModel.findById(req.params.id)
+        if(!targetBlogPost) next(createError(404, `Post with id ${req.params.id} not found!`))
+        await targetBlogPost.update({cover:req.file.path})
+       
+    } catch (error) {
+        next(error)
+    }
+})
+
+after:
+postsRouter.post("/:id/upload", cloudinaryUploader, async(req,res,next)=>{
+    try {
+        let targetBlogPost = await postsModel.findById(req.params.id)
+        if(!targetBlogPost) next(createError(404, `Post with id ${req.params.id} not found!`))
+        await targetBlogPost.update({cover:req.file.path})
+
+        res.send()  //this one
+
+    } catch (error) {
+        next(error)
+    }
+})

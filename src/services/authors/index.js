@@ -8,6 +8,7 @@ import express from "express";
 import authorsModel from "./model.js";
 import createError from "http-errors";
 import q2m from "query-to-mongo"
+import { cloudinaryUploader } from "../../lib/cloudinary.js";
 
 
 
@@ -109,6 +110,16 @@ authorsRouter.delete("/:id", async (req,res)=>{
     
 })
 
-
+//image uploading (avatar image for blogPost)
+// authorsRouter.post("/:id/avatar", cloudinaryUploader, async(req,res,next)=>{
+//     try {
+//         const targetAuthor = await authorsModel.findById(req.params.id)
+//         if(!targetAuthor) next(createError(404, `Author with id ${req.params.id} not found!`))
+//         await targetAuthor.update({avatar:req.file.path})
+//         res.send()
+//     } catch (error) {
+//         next(error)
+//     }
+// })
 
 export default authorsRouter

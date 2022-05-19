@@ -213,6 +213,8 @@ postsRouter.delete("/:id/comments/:commentId", async (req, res, next) => {
     }
   })
 
+
+//image uploading (cover image for blogPost)
 postsRouter.post("/:id/upload", cloudinaryUploader, async(req,res,next)=>{
     try {
         let targetBlogPost = await postsModel.findById(req.params.id)
