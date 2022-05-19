@@ -128,3 +128,24 @@ authorsRouter.post("/:id/avatar", cloudinaryUploader, async(req,res,next)=>{
     }
 })
 ----------------------------------------------------------------------------------------------------------
+
+FILE FILTER
+
+using || not working
+fileFilter: (req, file, multerNext) => {
+    if ( file.mimetype !== 'image/png' || file.mimetype !== 'image/gif' || file.mimetype !== 'image/jpeg') {
+      return multerNext(createError(400, "Only GIFs or JPEG/JPGs are allowed!"))
+    } else {
+      multerNext(null, true)
+    }
+  }
+
+  but using && is working
+  fileFilter: (req, file, multerNext) => {
+    if ( file.mimetype !== 'image/png' && file.mimetype !== 'image/gif' && file.mimetype !== 'image/jpeg') {
+      return multerNext(createError(400, "Only GIFs or JPEG/JPGs are allowed!"))
+    } else {
+      multerNext(null, true)
+    }
+  }
+  ----------------------------------------------------------------------------------------------------

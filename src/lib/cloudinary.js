@@ -12,7 +12,7 @@ export const cloudinaryUploader = multer({
   }),
   limits: { fileSize: 1 * 1024 * 1024 },
   fileFilter: (req, file, multerNext) => {
-    if (file.mimetype !== "image/gif") {
+    if ( file.mimetype !== 'image/png' && file.mimetype !== 'image/gif' && file.mimetype !== 'image/jpeg') {
       return multerNext(createError(400, "Only GIFs or JPEG/JPGs are allowed!"))
     } else {
       multerNext(null, true)
